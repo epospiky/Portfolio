@@ -6,12 +6,14 @@ import { faAngular, faCss3, faGithub, faHtml5, faJsSquare, faReact } from '@fort
 import Loader from 'react-loaders';
 
 const About = () =>{
+    const [letterClass, setLetterClass ] = useState('text-animate')
+    
     useEffect(() =>{
         return setTimeout(()=>{
             setLetterClass('text-animate-hover')
         }, 3000)
     },[])
-    const [letterClass, setLetterClass ] = useState('text-animate')
+    
     return(
         <>
         <div className ='container about-page'>
@@ -50,7 +52,7 @@ const About = () =>{
                 </div>
             </div>
         </div>
-        <Loader type='pacman' />
+        <Loader type="pacman" />
         </>
     )
 }
