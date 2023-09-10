@@ -1,16 +1,37 @@
 import Loader from 'react-loaders';
 import './index.scss'
+import emailjs from '@emailjs/browser';
 import AnimatedLetters from '../AnimatedLetters';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+
 
 const Contact = () =>{
+    const refForm = useRef()
     const [letterClass, setLetterClass] = useState('text-animate')
     useEffect(() => {
         return setTimeout(() =>{
             setLetterClass('text-animate-hover')
         }, 3000)
     }, [])
-
+    const sendEmail = (e) =>{
+        e.preventDefault()
+        emailjs.sendForm(
+                'service_h9af4wq',
+                'template_yp2gu93',
+                refForm.current,
+                'SLP3RQG-tX2dAOw5s'
+                )
+                .then(
+                    () => {
+                        alert('Message successfully sent!')
+                        window.location.reload(false)
+                    },
+                    () => {
+                        alert('Operation failed. PLease try again!')
+                    }
+                    )
+    }
     return (
         <>
         <div className='container contact-page'>
@@ -25,7 +46,7 @@ const Contact = () =>{
 Presently, I am seeking an opportunity to join a dynamic and ambitious company where I can utilize my current skills and experience while furthering my professional growth.
                 </p>
                 <div className='contact-form'>
-                    <form>
+                    <form ref={refForm} onSubmit={sendEmail}>
                         <ul>
                             <li className='half'>
                                 <input type='text'  name='name' placeholder='Name' required/>
@@ -45,6 +66,22 @@ Presently, I am seeking an opportunity to join a dynamic and ambitious company w
                         </ul>
                     </form>
                 </div>
+            </div>
+            <div className='info-map' >
+                Ernest Oganji,
+                <br/>
+                United Kingdom
+                <br />
+                221 Easter reload
+                <span>epospiky@gmail.com</span>
+            </div>
+            <div className='map-wrap'>
+                <MapContainer center={[44.96366, 19.61045]} zoom={13}>
+                    <TileLayer url='http://{$}.title.openstreetmap.org/{z}/{x}/{y}.png'/>
+                    <Marker position={[44.96366, 19.61045]} >
+                        <Popup>Epospiky lives here. Drop by for a cup of coffee</Popup>
+                    </Marker>
+                </MapContainer>
             </div>
         </div>
         <Loader type='pacman' />
